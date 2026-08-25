@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard PDI - Rúvila Magalhães | Grupo Boticário</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gb: {
+                            emerald: '#008552',
+                            dark: '#111827',
+                            light: '#F3F4F6',
+                            accent: '#059669',
+                            purple: '#6D28D9',
+                            card: '#1E293B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .checkbox-custom:checked + div { text-decoration: line-through; opacity: 0.6; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen pb-12 custom-scrollbar">
+
+    <!-- TOP HEADER / PROFILE BANNER -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 backdrop-blur-md bg-opacity-90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-300 flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-emerald-900/30">
+                        RM
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-xl font-bold text-white">Rúvila Magalhães</h1>
+                            <span class="bg-emerald-500/10 text-emerald-400 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                                Dev III (Sênior)
+                            </span>
+                            <span class="bg-purple-500/10 text-purple-300 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-purple-500/20">
+                                Target: Specialist I
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">Finanças GB • Hub Financeiro & Gestão de Bonificação</p>
+                    </div>
+                </div>
+
+                <!-- Global Progress Badge -->
+                <div class="flex items-center gap-6 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                    <div class="text-right">
+                        <span class="text-xs text-slate-400 uppercase font-semibold tracking-wider">Progresso do PDI</span>
+                        <div class="text-xl font-extrabold text-emerald-400" id="global-progress-text">0%</div>
+                    </div>
+                    <div class="w-32 bg-slate-800 h-3 rounded-full overflow-hidden p-0.5 border border-slate-700">
+                        <div id="global-progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500 w-0"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
+
+        <!-- QUICK STATS CARDS -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl text-xl">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <div>
+                    <span class="text-xs text-slate-400 block font-medium">Metas Concluídas</span>
+                    <span id="stat-completed-tasks" class="text-2xl font-bold text-white">0/0</span>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                <div class="p-3 bg-amber-500/10 text-amber-400 rounded-xl text-xl">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+                <div>
+                    <span class="text-xs text-slate-400 block font-medium">Streak Habitual</span>
+                    <span id="stat-habit-streak" class="text-2xl font-bold text-white">0 dias</span>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                <div class="p-3 bg-purple-500/10 text-purple-400 rounded-xl text-xl">
+                    <i class="fa-solid fa-gem"></i>
+                </div>
+                <div>
+                    <span class="text-xs text-slate-400 block font-medium">Essências GB Ativas</span>
+                    <span class="text-sm font-bold text-slate-200">Somos Inquietos + Sucesso Resp.</span>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                <div class="p-3 bg-blue-500/10 text-blue-400 rounded-xl text-xl">
+                    <i class="fa-regular fa-calendar-check"></i>
+                </div>
+                <div>
+                    <span class="text-xs text-slate-400 block font-medium">Horizonte Ciclo</span>
+                    <span class="text-sm font-bold text-slate-200">Ago 2026 - Jul 2027</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- WEEKLY HABIT TRACKER SECTION -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-6">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-arrows-spin text-emerald-400"></i>
+                        Tracker de Hábitos Semanais (Aceleração Contínua)
+                    </h2>
+                    <p class="text-xs text-slate-400">Rituais recorrentes para sustentar o atingimento dos objetivos maiores de System Design & IA.</p>
+                </div>
+                <div class="text-xs bg-slate-800 px-3 py-1.5 rounded-lg text-slate-300 font-medium border border-slate-700 self-start sm:self-auto">
+                    <i class="fa-regular fa-clock text-emerald-400 mr-1"></i> Resete a cada segunda-feira
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="text-xs text-slate-400 uppercase bg-slate-950/50 rounded-xl">
+                        <tr>
+                            <th class="py-3 px-4 rounded-l-lg">Hábito / Ritual</th>
+                            <th class="py-3 px-2 text-center">Seg</th>
+                            <th class="py-3 px-2 text-center">Ter</th>
+                            <th class="py-3 px-2 text-center">Qua</th>
+                            <th class="py-3 px-2 text-center">Qui</th>
+                            <th class="py-3 px-2 text-center">Sex</th>
+                            <th class="py-3 px-2 text-center">Sáb</th>
+                            <th class="py-3 px-2 text-center rounded-r-lg">Dom</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60" id="habit-table-body">
+                        <!-- Habits loaded via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- GOAL 1: DDD & SYSTEM DESIGN -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-xl">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-2.5 py-0.5 rounded-md border border-emerald-500/20">
+                            OBJETIVO 1
+                        </span>
+                        <span class="text-xs text-slate-400">Essência: <strong>Somos Inquietos</strong></span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">System Design & Business Acumen (DDD e Linguagem Ubíqua)</h2>
+                    <p class="text-xs text-slate-400 max-w-3xl">
+                        Traduzir a complexidade das regras de BSO, POC e SAP S/4HANA para a arquitetura de código, unificando a linguagem no Front/BFF e elevando a régua nos Code Reviews.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-4 bg-slate-950 p-3 rounded-xl border border-slate-800 min-w-[200px]">
+                    <div class="w-full">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-slate-400">Progresso Meta 1</span>
+                            <span id="goal1-progress-percent" class="font-bold text-emerald-400">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div id="goal1-progress-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metas Menores / Sub-tasks por categoria 70-20-10 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- 70% PRÁTICA -->
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <h3 class="font-semibold text-emerald-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-laptop-code"></i> 70% - Aprender Fazendo
+                        </h3>
+                        <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">Prática</span>
+                    </div>
+
+                    <div class="space-y-2.5" id="tasks-g1-70">
+                        <!-- Task item -->
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-emerald-500 focus:ring-emerald-500/20 bg-slate-950" data-goal="1" data-id="g1-70-1">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Mapear termos chave de negócio</span>
+                                Entrevistar PM/Backend sobre regras BSO/POC e listar em rascunho.
+                                <span class="text-[10px] text-emerald-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Mês 1</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-emerald-500 focus:ring-emerald-500/20 bg-slate-950" data-goal="1" data-id="g1-70-2">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Criar GLOSSARY.md no Repositório</span>
+                                Documentar jargões (PDV, PVR, Saldo Gerado, Conciliação) na raiz.
+                                <span class="text-[10px] text-emerald-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Mês 2</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-emerald-500 focus:ring-emerald-500/20 bg-slate-950" data-goal="1" data-id="g1-70-3">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Refatorar Contratos DTO no Front/BFF</span>
+                                Adequar naming de 1 fluxo crítico (ex: Onda 4 Ramp-up) ao Glossário.
+                                <span class="text-[10px] text-emerald-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Mês 3-4</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-emerald-500 focus:ring-emerald-500/20 bg-slate-950" data-goal="1" data-id="g1-70-4">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Atuar como Guardiã em Code Reviews</span>
+                                Cobrar padrões de Clean Arch e Nomenclatura Ubíqua nos PRs da squad.
+                                <span class="text-[10px] text-emerald-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Contínuo</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 20% SOCIAL / MENTORIA -->
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <h3 class="font-semibold text-teal-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-users"></i> 20% - Com Outros
+                        </h3>
+                        <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">Social</span>
+                    </div>
+
+                    <div class="space-y-2.5" id="tasks-g1-20">
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-emerald-500 focus:ring-emerald-500/20 bg-slate-950" data-goal="1" data-id="g1-20-1">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Validar System Design em Mentoria</span>
+                                Levar proposta de contratos/DDD para revisão com Monique Azevedo (Spec I).
+                                <span class="text-[10px] text-teal-400/80 block mt-1"><i class="fa-regular fa-clock"></i>🕒 Contínuo (Mês 1-6)</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-emerald-500 focus:ring-emerald-500/20 bg-slate-950" data-goal="1" data-id="g1-20-2">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Apresentar DDD no Fórum de Fronts PFG</span>
+                                Compartilhar case de adoção da Linguagem Ubíqua para o grupo estendido.
+                                <span class="text-[10px] text-teal-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Mês 4-5</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-emerald-500 focus:ring-emerald-500/20 bg-slate-950" data-goal="1" data-id="g1-20-2">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Pareamento de Fluxos com Backend</span>
+                                Realizar trocas quinzenais com a Barbara Melo (Dev III Backend) para desenhar diagramas e mapear o fluxo de dados e contratos dos sistemas atuais.
+                                <span class="text-[10px] text-teal-400/80 block mt-1"><i class="fa-regular fa-clock"></i> 🕒 Contínuo (Mês 1-6)</span>
+                            </div>
+                        </label>
+                        
+                    </div>
+                </div>
+
+                <!-- 10% FORMAL -->
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <h3 class="font-semibold text-indigo-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap"></i> 10% - Estudo Formal
+                        </h3>
+                        <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">Cursos</span>
+                    </div>
+
+                    <div class="space-y-2.5" id="tasks-g1-10">
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-emerald-500 focus:ring-emerald-500/20 bg-slate-950" data-goal="1" data-id="g1-10-1">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Concluir Módulos CS50 (Harvard)</span>
+                                Focar nas aulas de algoritmos, estrutura e design de software.
+                                <span class="text-[10px] text-indigo-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Mês 1-2</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-emerald-500 focus:ring-emerald-500/20 bg-slate-950" data-goal="1" data-id="g1-10-2">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Aplicar Módulo da Pós USP no Trabalho</span>
+                                Conectar conceitos das disciplinas de Arquitetura ao projeto real.
+                                <span class="text-[10px] text-indigo-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Mês 3-6</span>
+                            </div>
+                        </label>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- GOAL 2: AUTOMATION & AI AGENTS -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-xl">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-purple-500/10 text-purple-400 text-xs font-bold px-2.5 py-0.5 rounded-md border border-purple-500/20">
+                            OBJETIVO 2
+                        </span>
+                        <span class="text-xs text-slate-400">Essência: <strong>Buscamos Sucesso Responsável</strong></span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">Automação & Inovação (Inteligência Agêntica com Copilot/Cursor)</h2>
+                    <p class="text-xs text-slate-400 max-w-3xl">
+                        Evoluir as skills de IA para um modelo de Engenharia de Contexto em arquivo (`.cursorrules` / `AI-CONTEXT.md`), garantindo arquitetura limpa, segurança e velocidade na criação de features.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-4 bg-slate-950 p-3 rounded-xl border border-slate-800 min-w-[200px]">
+                    <div class="w-full">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-slate-400">Progresso Meta 2</span>
+                            <span id="goal2-progress-percent" class="font-bold text-purple-400">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div id="goal2-progress-bar" class="bg-purple-500 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metas Menores / Sub-tasks por categoria 70-20-10 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- 70% PRÁTICA -->
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <h3 class="font-semibold text-purple-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-robot"></i> 70% - Aprender Fazendo
+                        </h3>
+                        <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">Prática</span>
+                    </div>
+
+                    <div class="space-y-2.5" id="tasks-g2-70">
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-purple-500 focus:ring-purple-500/20 bg-slate-950" data-goal="2" data-id="g2-70-1">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Desenvolver AI-CONTEXT.md no Backoffice</span>
+                                Mapear camadas, regras de erro e stack do repositório.
+                                <span class="text-[10px] text-purple-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Mês 1-2</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-purple-500 focus:ring-purple-500/20 bg-slate-950" data-goal="2" data-id="g2-70-2">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Criar Regras Rígidas em .cursorrules</span>
+                                Forçar IA a acoplar componentes diretamente ao Design System (Flora).
+                                <span class="text-[10px] text-purple-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Mês 2-3</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-purple-500 focus:ring-purple-500/20 bg-slate-950" data-goal="2" data-id="g2-70-3">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Gerar Testes Mapeados Automaticamente</span>
+                                Automatizar criação de suítes de teste com MSW acopladas ao padrão do time.
+                                <span class="text-[10px] text-purple-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Mês 4</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 20% SOCIAL / BENCHMARK -->
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <h3 class="font-semibold text-teal-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-comments"></i> 20% - Com Outros
+                        </h3>
+                        <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">Social</span>
+                    </div>
+
+                    <div class="space-y-2.5" id="tasks-g2-20">
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-purple-500 focus:ring-purple-500/20 bg-slate-950" data-goal="2" data-id="g2-20-1">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Conduzir Tech Talk de IA para Mensal de PGF</span>
+                                Apresentar demonstração prática das skills/agentes para outros devs e time.
+                                <span class="text-[10px] text-teal-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Mês 4-5</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-purple-500 focus:ring-purple-500/20 bg-slate-950" data-goal="2" data-id="g2-20-2">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Colher Feedback de Uso com os Pares</span>
+                                Entrevistar colegas para refinar contexto dos agentes com base na dor real.
+                                <span class="text-[10px] text-teal-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Contínuo</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 10% FORMAL -->
+                <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <h3 class="font-semibold text-indigo-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-book-bookmark"></i> 10% - Estudo Formal
+                        </h3>
+                        <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400">Estudo</span>
+                    </div>
+
+                    <div class="space-y-2.5" id="tasks-g2-10">
+                        <label class="flex items-start gap-3 p-2.5 bg-slate-900/80 hover:bg-slate-900 rounded-lg cursor-pointer transition border border-slate-800/50">
+                            <input type="checkbox" class="checkbox-custom mt-1 rounded border-slate-700 text-purple-500 focus:ring-purple-500/20 bg-slate-950" data-goal="2" data-id="g2-10-1">
+                            <div class="text-xs text-slate-300">
+                                <span class="font-medium text-slate-100 block">Estudar "Prompt as Software" (2h/sem)</span>
+                                Aprofundar em Engenharia de Contexto, Cursor Composer e Claude System Prompts.
+                                <span class="text-[10px] text-indigo-400/80 block mt-1"><i class="fa-regular fa-clock"></i> Contínuo</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- DIÁRIO DE BORDO & INSIGHTS DA 1:1 -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-book-open text-amber-400"></i>
+                        Diário de Bordo & Preparatório para 1:1s
+                    </h2>
+                    <p class="text-xs text-slate-400">Anote pequenos ganhos, bloqueios ou aprendizados da semana para compartilhar com a liderança.</p>
+                </div>
+                <button id="save-notes-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-lg shadow-emerald-950">
+                    <i class="fa-solid fa-floppy-disk"></i> Salvar Notas
+                </button>
+            </div>
+
+            <textarea id="journal-notes" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none resize-y placeholder-slate-600" placeholder="Exemplo: 'Semana 3: Para meu objetivo de DDD, conversei com o PM sobre as regras do BSO e identifiquei o teto de 95% do desconto POC. Adicionei esse caso no GLOSSARY.md e atualizei as regras da IA...'"></textarea>
+            <span id="save-status" class="text-[11px] text-emerald-400 hidden block"><i class="fa-solid fa-circle-check"></i> Notas salvas localmente!</span>
+        </section>
+
+    </main>
+
+    <script>
+        // Default Habit List
+        const HABITS = [
+            { id: 'h1', name: 'Estudo CS50 / Pós USP (Foco CS e Arch)', days: [false, false, false, false, false, false, false] },
+            { id: 'h2', name: 'Code Review Criterioso (Clean Arch & DDD)', days: [false, false, false, false, false, false, false] },
+            { id: 'h3', name: 'Usar/Aprimorar Agentes de IA em tasks do dia', days: [false, false, false, false, false, false, false] },
+            { id: 'h4', name: 'Alinhamento/Troca com PM ou Mentoria (Monique)', days: [false, false, false, false, false, false, false] },
+            { id: 'h5', name: 'Anotar 1 Insight no Diário de Bordo', days: [false, false, false, false, false, false, false] }
+        ];
+
+        // State Management
+        let appState = {
+            tasks: {},
+            habits: HABITS,
+            notes: ''
+        };
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderHabits();
+            setupTaskListeners();
+            setupJournalListeners();
+            updateProgress();
+        });
+
+        // Load State from LocalStorage
+        function loadState() {
+            const saved = localStorage.getItem('pdi_ruvila_state');
+            if (saved) {
+                try {
+                    appState = JSON.parse(saved);
+                } catch (e) {
+                    console.error("Erro ao carregar estado salvo", e);
+                }
+            }
+
+            // Restore Checkboxes
+            document.querySelectorAll('.checkbox-custom').forEach(cb => {
+                const id = cb.getAttribute('data-id');
+                if (appState.tasks[id]) {
+                    cb.checked = true;
+                }
+            });
+
+            // Restore Notes
+            const journal = document.getElementById('journal-notes');
+            if (journal && appState.notes) {
+                journal.value = appState.notes;
+            }
+        }
+
+        // Save State to LocalStorage
+        function saveState() {
+            localStorage.setItem('pdi_ruvila_state', JSON.stringify(appState));
+        }
+
+        // Render Habit Tracker Table
+        function renderHabits() {
+            const tbody = document.getElementById('habit-table-body');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            appState.habits.forEach((habit, hIdx) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-850/40 transition';
+
+                let daysHtml = habit.days.map((checked, dIdx) => `
+                    <td class="py-3 px-2 text-center">
+                        <input type="checkbox" 
+                            class="rounded border-slate-700 text-emerald-500 focus:ring-emerald-500/20 bg-slate-950 cursor-pointer" 
+                            ${checked ? 'checked' : ''} 
+                            onchange="toggleHabit(${hIdx}, ${dIdx})">
+                    </td>
+                `).join('');
+
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-medium text-slate-200 text-xs">${habit.name}</td>
+                    ${daysHtml}
+                `;
+                tbody.appendChild(tr);
+            });
+
+            calculateStreak();
+        }
+
+        // Toggle Habit Day
+        window.toggleHabit = function(hIdx, dIdx) {
+            appState.habits[hIdx].days[dIdx] = !appState.habits[hIdx].days[dIdx];
+            saveState();
+            calculateStreak();
+        };
+
+        // Calculate Habit Streak
+        function calculateStreak() {
+            let activeDays = 0;
+            for (let day = 0; day < 7; day++) {
+                const checkedCount = appState.habits.filter(h => h.days[day]).length;
+                if (checkedCount >= 2) activeDays++; // Se fez pelo menos 2 hábitos no dia
+            }
+            const streakElem = document.getElementById('stat-habit-streak');
+            if (streakElem) streakElem.textContent = `${activeDays} dia${activeDays !== 1 ? 's' : ''}`;
+        }
+
+        // Setup Task Checkbox Listeners
+        function setupTaskListeners() {
+            document.querySelectorAll('.checkbox-custom').forEach(cb => {
+                cb.addEventListener('change', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    appState.tasks[id] = e.target.checked;
+                    saveState();
+                    updateProgress();
+                });
+            });
+        }
+
+        // Setup Journal
+        function setupJournalListeners() {
+            const saveBtn = document.getElementById('save-notes-btn');
+            const journal = document.getElementById('journal-notes');
+            const status = document.getElementById('save-status');
+
+            if (saveBtn && journal) {
+                saveBtn.addEventListener('click', () => {
+                    appState.notes = journal.value;
+                    saveState();
+                    status.classList.remove('hidden');
+                    setTimeout(() => status.classList.add('hidden'), 3000);
+                });
+            }
+        }
+
+        // Calculate Progress Metrics
+        function updateProgress() {
+            const allCheckboxes = Array.from(document.querySelectorAll('.checkbox-custom'));
+            const totalTasks = allCheckboxes.length;
+            const completedTasks = allCheckboxes.filter(cb => cb.checked).length;
+
+            // Global %
+            const globalPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            document.getElementById('global-progress-text').textContent = `${globalPercent}%`;
+            document.getElementById('global-progress-bar').style.width = `${globalPercent}%`;
+            document.getElementById('stat-completed-tasks').textContent = `${completedTasks}/${totalTasks}`;
+
+            // Goal 1 Progress
+            const g1Cbs = allCheckboxes.filter(cb => cb.getAttribute('data-goal') === '1');
+            const g1Done = g1Cbs.filter(cb => cb.checked).length;
+            const g1Percent = g1Cbs.length > 0 ? Math.round((g1Done / g1Cbs.length) * 100) : 0;
+
+            document.getElementById('goal1-progress-percent').textContent = `${g1Percent}%`;
+            document.getElementById('goal1-progress-bar').style.width = `${g1Percent}%`;
+
+            // Goal 2 Progress
+            const g2Cbs = allCheckboxes.filter(cb => cb.getAttribute('data-goal') === '2');
+            const g2Done = g2Cbs.filter(cb => cb.checked).length;
+            const g2Percent = g2Cbs.length > 0 ? Math.round((g2Done / g2Cbs.length) * 100) : 0;
+
+            document.getElementById('goal2-progress-percent').textContent = `${g2Percent}%`;
+            document.getElementById('goal2-progress-bar').style.width = `${g2Percent}%`;
+        }
+    </script>
+</body>
+</html>
